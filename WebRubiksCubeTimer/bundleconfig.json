@@ -1,0 +1,365 @@
+[
+  {
+    "outputFileName": "wwwroot/CSS/Site.min.css",
+    "inputFiles": [
+      "wwwroot/CSS/Site.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/CSS/Sidebar.min.css",
+    "inputFiles": [
+      "wwwroot/CSS/Sidebar.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/AddSeries.min.js",
+    "inputFiles": [
+      "wwwroot/JS/AddSeries.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/AdminEmailSending.min.js",
+    "inputFiles": [
+      "wwwroot/JS/AdminEmailSending.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/CategoriesManager.min.js",
+    "inputFiles": [
+      "wwwroot/JS/CategoriesManager.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/CategoryTrend.min.js",
+    "inputFiles": [
+      "wwwroot/JS/CategoryTrend.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/ChartLib.min.js",
+    "inputFiles": [
+      "wwwroot/JS/ChartLib.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/CubesCollection.min.js",
+    "inputFiles": [
+      "wwwroot/JS/CubesCollection.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/CubesExplorer.min.js",
+    "inputFiles": [
+      "wwwroot/JS/CubesExplorer.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/CubesManager.min.js",
+    "inputFiles": [
+      "wwwroot/JS/CubesManager.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/GlobalEmail.min.js",
+    "inputFiles": [
+      "wwwroot/JS/GlobalEmail.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/Index.min.js",
+    "inputFiles": [
+      "wwwroot/JS/Index.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/Pagination.min.js",
+    "inputFiles": [
+      "wwwroot/JS/Pagination.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/RandomVerificationKey.min.js",
+    "inputFiles": [
+      "wwwroot/JS/RandomVerificationKey.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/RequestArchive.min.js",
+    "inputFiles": [
+      "wwwroot/JS/RequestArchive.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/RequestExplorer.min.js",
+    "inputFiles": [
+      "wwwroot/JS/RequestExplorer.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/RequestPrivate.min.js",
+    "inputFiles": [
+      "wwwroot/JS/RequestPrivate.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/RequestsLib.min.js",
+    "inputFiles": [
+      "wwwroot/JS/RequestsLib.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/RequestsPublic.min.js",
+    "inputFiles": [
+      "wwwroot/JS/RequestsPublic.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/ResetPassword.min.js",
+    "inputFiles": [
+      "wwwroot/JS/ResetPassword.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/RolesTable.min.js",
+    "inputFiles": [
+      "wwwroot/JS/RolesTable.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/ScramblesManager.min.js",
+    "inputFiles": [
+      "wwwroot/JS/ScramblesManager.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/SeriesExplorer.min.js",
+    "inputFiles": [
+      "wwwroot/JS/SeriesExplorer.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/SeriesExplorerAdmin.min.js",
+    "inputFiles": [
+      "wwwroot/JS/SeriesExplorerAdmin.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/SeriesFilterModal.min.js",
+    "inputFiles": [
+      "wwwroot/JS/SeriesFilterModal.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/Sidebar.min.js",
+    "inputFiles": [
+      "wwwroot/JS/Sidebar.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/TimerSerie.min.js",
+    "inputFiles": [
+      "wwwroot/JS/TimerSerie.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/TimeSpanMask.min.js",
+    "inputFiles": [
+      "wwwroot/JS/TimeSpanMask.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/ToastMessage.min.js",
+    "inputFiles": [
+      "wwwroot/JS/ToastMessage.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/UserAccount.min.js",
+    "inputFiles": [
+      "wwwroot/JS/UserAccount.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/UserCreateAccount.min.js",
+    "inputFiles": [
+      "wwwroot/JS/UserCreateAccount.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/UserListPage.min.js",
+    "inputFiles": [
+      "wwwroot/JS/UserListPage.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "wwwroot/JS/Tools/ScrambleTools.min.js",
+    "inputFiles": [
+      "wwwroot/JS/Tools/ScrambleTools.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": false
+  }
+]

@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="~/Library/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Library/font-awesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/Library/font-awesome/css/brands.min.css" />
+    <link rel="stylesheet" href="~/Library/font-awesome/css/solid.min.css" />
+    <environment names="Development">
+        <link rel="stylesheet" href="~/CSS/Sidebar.css" />
+        <link rel="stylesheet" href="~/CSS/Site.css" />
+    </environment>
+    <environment names="Production">
+        <link rel="stylesheet" href="~/CSS/Sidebar.min.css" />
+        <link rel="stylesheet" href="~/CSS/Site.min.css" />
+    </environment>
+    @RenderSection("stylesheets", false)
+    <title>Rubik's cube timer</title>
+</head>
+
+<body>
+    <header>
+        @await Component.InvokeAsync("SiteHeader")
+    </header>
+    <div style="margin: 50px 0px 50px 0px">
+        @RenderBody()
+    </div>
+    <footer>
+        @await Html.PartialAsync("_Footer")
+    </footer>
+
+    <script src="~/Library/jquery/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/Library/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+    <script src="~/Library/font-awesome/js/fontawesome.min.js" asp-append-version="true"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

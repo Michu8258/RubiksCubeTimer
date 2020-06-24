@@ -1,0 +1,21 @@
+﻿<div class="sticky sticky-header">
+    <div class="footer-container">
+        <span class="text-dark font-weight-bold">Rubik's cube online timer</span>
+
+        @if (User?.Identity?.IsAuthenticated == true)
+        {
+            <span class="sticky-header-right">
+                <a asp-action="Logout" asp-controller="Login" class="bg-secondary text-white m-1 p-1 rounded" style="text-decoration: none">Sign out</a>
+                <a asp-action="ShowMyAccount" asp-controller="User" asp-route-userName="@User?.Identity?.Name" class="badge padge-pill badge-primary p-1">
+                @User?.Identity?.Name
+                </a>
+            </span>
+        }
+        else
+        {
+            <span class="sticky-header-right">
+                <a asp-action="Login" asp-controller="Login" class="bg-primary text-white m-1 p-1 rounded" style="text-decoration: none">Sign in</a>
+            </span>
+        }
+    </div>
+</div>

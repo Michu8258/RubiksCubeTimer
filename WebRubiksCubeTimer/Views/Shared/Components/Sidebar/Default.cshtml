@@ -1,0 +1,173 @@
+﻿@model SidebarViewModel
+
+@if (User.IsInRole("Administrator") == true)
+{
+    <div id="UserManagementModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Management Options</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body form-group">
+                    <span class="d-flex">
+                        <strong id="UserNameManagement"></strong>
+                    </span>
+                    <div class="my-2">
+                        <a asp-action="UserMainPage" asp-controller="PinnedUser" class="btn btn-sm btn-dark text-white">Show user main page</a>
+                    </div>
+                    <div class="my-2">
+                        <a asp-action="UserCubesCollection" asp-controller="PinnedUser" class="btn btn-sm btn-dark text-white">Manage user cubes collection</a>
+                    </div>
+                    <div class="my-2">
+                        <a asp-action="UserBestResults" asp-controller="PinnedUser" class="btn btn-sm btn-dark text-white">Inspect user best times</a>
+                    </div>
+                    <div class="my-2">
+                        <a asp-action="UserCategoryTrend" asp-controller="PinnedUser" class="btn btn-sm btn-dark text-white">Inspect user time trends</a>
+                    </div>
+                    <div class="my-2">
+                        <a asp-action="UserSeriesExplorer" asp-controller="PinnedUser" class="btn btn-sm btn-dark text-white">Mange user seires and soleves</a>
+                    </div>
+                    <div class="my-2">
+                        <a href="#" id="UnpinUserButton" class="btn btn-sm btn-danger text-white">Unpin user</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="sidebar-wrapper">
+    <div class="sidebar">
+        <div class="sidebar-content">
+            <div>
+                <h5>Menus</h5>
+            </div>
+            <div class="py-2">
+                <a class="btn btn-sm btn-dark text-left d-flex" asp-action="Index" asp-controller="Home">Home</a>
+            </div>
+            <div class="py-2">
+                <a class="btn btn-sm btn-dark text-left d-flex" asp-action="Cubes" asp-controller="Home">Cubes explorer</a>
+            </div>
+
+            @if (User.Identity.IsAuthenticated == true)
+            {
+                @await Component.InvokeAsync("SerieStart")
+                <div class="py-2">
+                    <a class="btn btn-sm btn-dark text-left d-flex" asp-action="Guidelines" asp-controller="About">Guidelines</a>
+                </div>
+            }
+
+            @if (User.IsInRole("Administrator"))
+            {
+                <div class="accordion py-2" id="AdministrativeTools">
+                    <div>
+                        <div class="my-0 py-0 d-flex flex-column">
+                            <button class="btn btn-sm btn-dark text-left" type="button" data-toggle="collapse" data-target="#OptionsAdministrative"
+                                    onclick="Autohide('Administrative')">
+                                <span>
+                                    Administrative
+                                </span>
+                                <span class="align-items-center fa-pull-right">
+                                    <i class="fa @(Model.ControllerName.Contains("Admin") ? "fa-angle-up" : "fa-angle-down")" text-white" id="ArrowAdministrative"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="OptionsAdministrative" class="collapse @(Model.ControllerName.Contains("Admin") ? "show" : "hide")" aria-labelledby="headingOne" data-parent="#AdministrativeTools">
+                            <div>
+                                <a asp-action="UsersList" asp-controller="UserAdmin" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">User Manager</a>
+                                <a asp-action="RolesList" asp-controller="RolesAdmin" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Role Manager</a>
+                                <a asp-action="GlobalEmail" asp-controller="EmailAdmin" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Send global email</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+            {
+                <div class="accordion py-2" id="ModeratorTools">
+                    <div>
+                        <div class="my-0 py-0 d-flex flex-column">
+                            <button class="btn btn-sm btn-dark text-left" type="button" data-toggle="collapse" data-target="#OptionsModerator"
+                                    onclick="Autohide('Moderator')">
+                                <span>
+                                    Moderator
+                                </span>
+                                <span class="align-items-center fa-pull-right">
+                                    <i class="fa @(Model.ControllerName == "Cubes" || Model.ControllerName == "Categories" ? "fa-angle-up" : "fa-angle-down")" text-white" id="ArrowModerator"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="OptionsModerator" class="collapse @(Model.ControllerName == "Cubes" || Model.ControllerName == "Categories" ? "show" : "hide")" aria-labelledby="headingOne" data-parent="#ModeratorTools">
+                            <div>
+                                <a asp-action="Summary" asp-controller="Cubes" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Cubes Manager</a>
+                                <a asp-action="Index" asp-controller="Categories" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Categories Manager</a>
+                                <a asp-action="Scramble" asp-controller="Categories" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Scrambles Manager</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (User.Identity.IsAuthenticated == true)
+            {
+                <div class="accordion py-2" id="UserTools">
+                    <div>
+                        <div class="my-0 py-0 d-flex flex-column">
+                            <button class="btn btn-sm btn-dark text-left" type="button" data-toggle="collapse" data-target="#OptionsUser"
+                                    onclick="Autohide('User')">
+                                <span>
+                                    User
+                                </span>
+                                <span class="align-items-center fa-pull-right">
+                                    <i class="fa @(Model.ControllerName == "User" ? "fa-angle-up" : "fa-angle-down")" text-white" id="ArrowUser"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="OptionsUser" class="collapse @(Model.ControllerName == "User" ? "show" : "hide")" aria-labelledby="headingOne" data-parent="#UserTools">
+                            <div>
+                                <a asp-action="ShowMyAccount" asp-controller="User" asp-route-userName="@User?.Identity?.Name" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">My personalized data</a>
+                                <a asp-action="ModifyAccount" asp-controller="User" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Modify account data</a>
+                                <a asp-action="ShowMyCubesCollection" asp-controller="User" asp-route-userName="@User?.Identity?.Name" class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">My cubes collection</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion py-2" id="SeriesTools">
+                    <div>
+                        <div class="my-0 py-0 d-flex flex-column">
+                            <button class="btn btn-sm btn-dark text-left" type="button" data-toggle="collapse" data-target="#OptionsSeries"
+                                    onclick="Autohide('Series')">
+                                <span>
+                                    Series
+                                </span>
+                                <span class="align-items-center fa-pull-right">
+                                    <i class="fa @(Model.ControllerName == "Series" ? "fa-angle-up" : "fa-angle-down")" text-white" id="ArrowSeries"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="OptionsSeries" class="collapse @(Model.ControllerName == "Series" ? "show" : "hide")" aria-labelledby="headingOne" data-parent="#SeriesTools">
+                            <div>
+                                <a asp-action="Best" asp-controller="Series" asp-route-userName="@User?.Identity?.Name"
+                                   class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Best results</a>
+                                <a asp-action="Trend" asp-controller="Series" asp-route-userName="@User?.Identity?.Name"
+                                   class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Category trend</a>
+                                <a asp-action="Explore" asp-controller="Series" asp-route-userName="@User?.Identity?.Name"
+                                   class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Explore series</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @await Component.InvokeAsync("Requests", Model.ControllerName)
+
+                @await Component.InvokeAsync("PageTools", Model)
+            }
+        </div>
+    </div>
+</div>

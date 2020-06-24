@@ -1,0 +1,8 @@
+﻿@model bool
+
+@if (Model)
+{
+    <div class="py-2">
+        <a asp-action="CreateSeries" asp-controller="User" asp-route-userName="@User?.Identity?.Name" class="btn btn-sm btn-dark text-left d-flex">Create new series</a>
+    </div>
+}

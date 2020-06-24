@@ -1,0 +1,46 @@
+﻿@model ScrambleUpdateViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="col-6 offset-3">
+            @if (Model.IsModification)
+            {
+                <h4>Modify scramble definition (@Model.CategoryName)</h4>
+            }
+            else
+            {
+                <h4>Add new scramble definition (@Model.CategoryName)</h4>
+            }
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div>
+                @if (Model.IsModification)
+                {
+                    <form asp-action="ModifyScramble" method="post">
+                        <partial name="ScrambleUpdateFormPartial" , model="Model" />
+                        <button type="submit" class="btn btn-sm btn-dark text-white">Modify definition</button>
+                        <a asp-action="Scramble" asp-controller="Categories" asp-route-id="@Model.CategoryId" class="btn btn-sm btn-secondary">Cancel</a>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="AddScramble" method="post">
+                        <partial name="ScrambleUpdateFormPartial" , model="Model" />
+                        <button type="submit" class="btn btn-sm btn-dark text-white">Create definition</button>
+                        <a asp-action="Scramble" asp-controller="Categories" asp-route-id="@Model.CategoryId" class="btn btn-sm btn-secondary">Cancel</a>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -1,0 +1,112 @@
+﻿@model BestTimesViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        @if (Model.ViewType != 1)
+        {
+            <h4>
+                Your best results in each category
+                @if (User?.IsInRole("Administrator") == true)
+                {
+                    <strong>(@Model.UserName, @Model.UserId)</strong>
+                }
+            </h4>
+        }
+        else
+        {
+            <h4>
+                Your best results for each of your cubes
+                @if (User?.IsInRole("Administrator") == true)
+                {
+                    <strong>(@Model.UserName, @Model.UserId)</strong>
+                }
+            </h4>
+        }
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="ViewType" />
+        <table class=" table table-sm table-bordered table-striped" id="SeriesDetails">
+            <thead class="thead-dark">
+                <tr>
+                    @if (Model.ViewType != 1)
+                    {
+                        <th class="align-middle">Category</th>
+                    }
+                    else
+                    {
+                        <th class="align-middle">Cube</th>
+                    }
+                    <th class="align-middle">Category option</th>
+                    <th class="align-middle">Duration</th>
+                    <th class="align-middle">Time stamp</th>
+                    <th class="align-middle">DNF</th>
+                    <th class="align-middle">Penalty (2s)</th>
+                    <th class="align-middle">Serie ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.TimeCollection.Any())
+                {
+                    foreach (var categoryOrCube in Model.TimeCollection)
+                    {
+                        @for (int i = 0; i < categoryOrCube.Times.Count(); i++)
+                        {
+                            <tr>
+                                @if (i == 0)
+                                {
+                                    <td rowspan="@categoryOrCube.Times.Count()">@categoryOrCube.Description</td>
+                                }
+                                <td class="align-middle">@categoryOrCube.Times[i].CategoryOption</td>
+                                <td class="align-middle">@categoryOrCube.Times[i].Duration.ToString("hh':'mm':'ss'.'fff")</td>
+                                <td class="align-middle">@categoryOrCube.Times[i].TimeStamp.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                                <td class="align-middle">
+                                    @if (categoryOrCube.Times[i].DNF)
+                                    {
+                                        <input type="checkbox" disabled selected />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled />
+                                    }
+                                </td>
+                                <td class="align-middle">
+                                    @if (categoryOrCube.Times[i].Penalty)
+                                    {
+                                        <input type="checkbox" disabled selected />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" disabled />
+                                    }
+                                </td>
+                                <td class="align-middle">@categoryOrCube.Times[i].SerieID</td>
+                            </tr>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="align-middle text-center">No results to show</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-end">
+            <a asp-action="BestResults" asp-controller="Series" asp-route-id="@Model.UserId" asp-route-type="0"
+               class="btn btn-sm @(Model.ViewType != 1 ? "btn-dark" : "btn-secondary") text-white mx-2">Category mode</a>
+            <a asp-action="BestResults" asp-controller="Series" asp-route-id="@Model.UserId" asp-route-type="1"
+               class="btn btn-sm @(Model.ViewType != 1 ? "btn-secondary" : "btn-dark") text-white">Cube mode</a>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

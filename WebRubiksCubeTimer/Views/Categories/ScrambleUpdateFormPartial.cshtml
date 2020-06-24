@@ -1,0 +1,72 @@
+﻿@model ScrambleUpdateViewModel
+
+<div>
+    <input type="hidden" asp-for="Identity" />
+    <input type="hidden" asp-for="IsModification" />
+    <input type="hidden" asp-for="CategoryName" />
+    <input type="hidden" asp-for="CategoryId" />
+    <div class="row row-cols-2">
+        <div class="col-6 form-group">
+            <label asp-for="ScrambleName"></label>
+            <input asp-for="ScrambleName" class="form-control" />
+        </div>
+        <div class="col-6 form-group">
+            <label asp-for="DefaultScrambleLength"></label>
+            <input asp-for="DefaultScrambleLength" type="number" class="form-control" />
+        </div>
+    </div>
+    <div class="row row-cols-2">
+        <div class="col-6 form-group">
+            <label asp-for="MinimumScrambleLength"></label>
+            <input asp-for="MinimumScrambleLength" type="number" class="form-control" />
+        </div>
+        <div class="col-6 form-group">
+            <label asp-for="MaximumScrambleLength"></label>
+            <input asp-for="MaximumScrambleLength" type="number" class="form-control" />
+        </div>
+    </div>
+    <div class="row row-cols-2">
+        <div class="col-6 form-group">
+            <label asp-for="TopColor"></label>
+            <input asp-for="TopColor" class="form-control" />
+        </div>
+        <div class="col-6 form-group">
+            <label asp-for="FrontColor"></label>
+            <input asp-for="FrontColor" class="form-control" />
+        </div>
+    </div>
+    <div class="row row-cols-2">
+        <div class="col-6 form-group">
+            <label asp-for="EliminateDuplicates"></label>
+            <div class="form-control">
+                <input asp-for="EliminateDuplicates" type="checkbox" />
+                <label asp-for="EliminateDuplicates">Yes</label>
+            </div>
+        </div>
+        <div class="col-6 form-group">
+            <label asp-for="AllowRegenerate"></label>
+            <div class="form-control">
+                <input asp-for="AllowRegenerate" type="checkbox" />
+                <label asp-for="AllowRegenerate">Yes</label>
+            </div>
+        </div>
+    </div>
+    <div class="row row-cols-2">
+        <div class="col-6 form-group">
+            <label asp-for="Disabled"></label>
+            <div class="form-control">
+                <input asp-for="Disabled" type="checkbox" />
+                <label asp-for="Disabled">Yes</label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-warning">
+    1. Scramble name for cateogiry has to specified and unique.
+</div>
+<div class="text-warning">
+    2. Default algorithm length should be grather than or equal to minimum algorithm length and less than or equal to maximum algorithm length.
+</div>
+<div class="text-warning mb-3">
+    3. Top and front walls stickers colors must be specified.
+</div>

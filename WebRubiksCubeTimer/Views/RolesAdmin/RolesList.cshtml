@@ -1,0 +1,58 @@
+﻿@model IEnumerable<string>
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div id="DeleteRolesModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="DeleteModalHeader">Modal Header</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="DeleteModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="RoleDeletionConfirmed()">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <h4>Roles List</h4>
+
+        <div class="text-danger form-button-margin">
+            @foreach (var message in Model)
+            {
+                <span>@message</span>
+            }
+        </div>
+
+        <div>
+            <table class="table table-sm table-bordered table-striped" id="RolesTable" name="RolesTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="align-middle">Role id</th>
+                        <th class="align-middle">Role name</th>
+                        <th class="align-middle">Actions</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <a class="btn btn-dark" asp-action="CreateRole">Add new role</a>
+    </div>
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/RolesTable.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/RolesTable.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

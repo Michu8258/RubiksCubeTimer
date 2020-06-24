@@ -1,0 +1,59 @@
+﻿@model CreateAccountModel
+
+<div class="form-centered">
+    <div>
+        <div class="form-left-align">
+            <h4>Registration</h4>
+        </div>
+    </div>
+
+    <div asp-validation-summary="All" class="form-left-align text-danger"></div>
+
+    <div class="form-left-align">
+        <form asp-action="CreateAccount" method="post" id="CreateForm">
+            <div class="form-group">
+                <label asp-for="UserName">User name</label>
+                <div class="d-none" id="BadUserName">
+                    <label class="text-danger">UserName should be at least 8 charasters long.</label>
+                </div>
+                <input asp-for="UserName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Email">Email address</label>
+                <div class="d-none" id="BadEmail">
+                    <label class="text-danger">Make sure email address contains '@@' and '.'</label>
+                </div>
+                <input asp-for="Email" type="email" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber">Phone number</label>
+                <input asp-for="PhoneNumber" type="number" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <div class="d-none" id="PasswordNotEqual">
+                    <label class="text-danger">Specified passwords are not equal or have less than 8 characters.</label>
+                </div>
+                <input asp-for="Password" type="password" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password2"> Confirm password</label>
+                <input asp-for="Password2" type="password" class="form-control" />
+            </div>
+            <div class="form-group">
+                You do not need to specify your phone number. Please make sure that email address is correct, because it will be used to verify your identity when signing in.
+            </div>
+            <button type="submit" class="btn btn-dark" id="SubmitButton">Register</button>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/UserCreateAccount.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/UserCreateAccount.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -1,0 +1,62 @@
+﻿@model CreateNewSeriesViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="col-4 offset-4">
+            <h4>Create new solving serie</h4>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <form asp-action="CreateSeries" method="post">
+                <input type="hidden" asp-for="UserIdentity" />
+                <input type="hidden" asp-for="SeriesId" />
+                <div class=" form-group">
+                    <label asp-for="SelectedCategoryId">Select category</label>
+                    <select asp-for="SelectedCategoryId" class="form-control">
+                        <option selected disabled>Please select</option>
+                        @foreach (var category in Model.AvailableCategories)
+                        {
+                            <option value="@category.Identity">@category.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SelectedManufacturerId">Select manufacturer</label>
+                    <select asp-for="SelectedManufacturerId" class="form-control" disabled>
+                        <option selected disabled>Please select</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SelectedCubeId">Select cube</label>
+                    <select asp-for="SelectedCubeId" class="form-control" disabled>
+                        <option selected disabled>Please select</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryOptionId">Select category option</label>
+                    <select asp-for="CategoryOptionId" class="form-control" disabled>
+                        <option selected disabled>Please select</option>
+                    </select>
+                </div>
+                <div class="mt-4">
+                    <button id="CreateButton" type="submit" class=" btn btn-dark text-white" disabled>Create</button>
+                    <a asp-action="ShowMyAccount" asp-controller="User" asp-route-userName="@User?.Identity?.Name"
+                       class="btn btn-secondary text-white">Back to account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/AddSeries.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/AddSeries.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

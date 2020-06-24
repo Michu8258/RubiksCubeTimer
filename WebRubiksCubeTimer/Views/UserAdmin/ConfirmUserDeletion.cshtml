@@ -1,0 +1,33 @@
+﻿@model UserDeletionModel
+
+<div class="form-centered">
+    <div>
+        <div class="form-left-align">
+            <h4>Confirm to delete user</h4>
+        </div>
+
+        <div class="form-left-align">
+            <form asp-action="DeleteUser" method="post">
+                <input type="hidden" asp-for="ReturnUrl" value="@ViewBag.ReturnUrl" />
+                <div class="form-group">
+                    <label asp-for="UserName">User name</label>
+                    <input asp-for="UserName" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailAddress">Email address</label>
+                    <input asp-for="EmailAddress" type="email" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Id">Identifuer</label>
+                    <input asp-for="Id" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="DeleteUserDataStorage">Delete all existing user data</label>
+                    <input asp-for="DeleteUserDataStorage" type="checkbox" class="form-control form-checkbox-move-left" />
+                </div>
+                <button type="submit" class="btn btn-dark">Delete</button>
+                <a href="@ViewBag.ReturnUrl" class="btn btn-light">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,192 @@
+﻿@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="jumbotron col-8 offset-2 text-justify">
+            <h4>Guidelines</h4>
+            <p>This simple guidelines should give you some advices on how to handle this website.</p>
+            <hr class="mb-4 mt-2" />
+
+            <h5>Brief info</h5>
+            <p>
+                To start solving serie, you need cube. Without cube, you cant solve one. This website
+                provides bunch of predefined cubes and you can add every of those cubes to your cubes collection
+                <a asp-controller="User" asp-action="ShowMyCubesCollection" asp-route-userName="@User?.Identity?.Name">here</a>.
+                You can also navigate to this page, by selecting "User" menu, and "My cubes collection" submenu.
+            </p>
+
+            <p>
+                Once you add some cubes to collection (you need to add at least one cube), you will be able to create
+                new serie. If you have any cube assigned to your collection, just click "Create new series" button
+                in menus, that button will redirect you to page, where you can select cube, that you will use to
+                proceed with solves, and category option - the way that you are solving the cube e.g. one-handed.
+            </p>
+
+            <p>
+                After create any solve in serie, you will see your times (from current serie) in tha table in
+                the timer view. There is no limit of amount of solves in serie, so you can add as many as you want.
+                Ech solve, average times will update to show you current statistics of your serie.
+            </p>
+
+            <p>
+                Once you finish the serie, of course, you are able to see you results from past series. You can
+                use series manager <a asp-controller="Series" asp-action="Explore" asp-route-userName="@User?.Identity?.Name"> here</a>
+                or select "Series" menu and "Explore series" submenu. In this view you can view you results. Also, you
+                can filter them, for example you can select series only made with specific cube from your collection.
+            </p>
+
+            <p>
+                Furthermore, you can vie a trend for your solves, and again, you can filter showed series in a way
+                you like. To schow trend, click <a asp-controller="Series" asp-action="Trend" asp-route-userName="@User?.Identity?.Name">here</a>,
+                or just nawigate to "Series" menu, and "Category trend" submenu.
+            </p>
+
+            <p>
+                It may happen that you would like to use some cube (for example you have some cube, and there is
+                no such cube in globally defined cubes), or you will notice something that you think should be improved
+                in this website, you are free to create a request <a asp-controller="Requests" asp-action="CreateRequest"> here</a>.
+                This feature allows you to communicate with moderators and administrators of this page. While you create
+                new request, make sure you make public or private request, depends on your needs.
+            </p>
+
+            <hr class="mb-4 mt-2" />
+            <h5>Home</h5>
+            <p>
+                Basically, home page show best user times and favourite categories. Those statistics deal to all users.
+                Chart shows how many series of each category was created to the moment of visiting page by you. Tables below
+                chart show best time for each category, and best time for every defined cube. So, if you are fast enough,
+                your user name may appear there.
+            </p>
+
+            <hr class="mb-4 mt-2" />
+            <h5>Cubes explorer</h5>
+            <p>
+                Cubes explorer is a simple tool that alowes anyone who visits the page to explore all cubes globally defined.
+                There is a simple cubes filter available, that allows you to quickly verify if cube you have is already defined,
+                or should be added to webpage. You can open cubes explorer <a asp-action="Cubes" asp-controller="Home">here</a>,
+                or select "Cubes explorer" menu.
+            </p>
+
+            <hr class="mb-4 mt-2" />
+            <h5>Create new series</h5>
+            <p>
+                Once you added any cube to your cubes collection, you can <a asp-controller="User" asp-action="CreateSeries" asp-route-userName="@User?.Identity?.Name">add new serie</a>
+                of solves. First, you will need to specify cube and category option, once you do that, you will be redirected
+                to timer page itself. On the top of page, you will se table fith current series data, and below it - the timer.
+                You can start and stop it by hiting spacebar. Some categories has defined scramble definition(s) - if
+                administrator or moderator created such definition. Those scrambles have vary options, they can allow you
+                to regenerate algorithm or not, you will be able to change its length or not. If scramble is defined for current
+                category - you will see a Tools menu and Scramble submenu on tle left side, where you can manage the scramble.
+                Below scramble (if defined), you will see a bar chart - every new solve wil appear there as new bar. on the right
+                side you will notice table with all times from serie, and below it - statistics of current serie.
+            </p>
+
+            <p>
+                After creating every solve, you will have to decide if your time should be stored or not, and if yes, you will
+                be able to mark new time as DNF, add 2s penalty to your time and set time as last in serie - this prevents you
+                to add another solve to serie - it will be closed then. Redirecting or refreshing timer page will also end serie.
+            </p>
+
+            <hr class="mb-4 mt-2" />
+            <h5>User</h5>
+            <h6>Personalized data</h6>
+            <p>
+                This view is custom for every user, and basically it is separated into two columns. Left one shows data
+                about your favourite categories, right one shows data about your favourite cubes. For every category and
+                cube, you can see, at what position, your best time is in global ranking, and hov many solves are registered
+                by you for this specific category or cube. You can click <a asp-controller="User" asp-action="ShowMyAccount" asp-route-userName="@User?.Identity?.Name">here</a>
+                to redirect to your personalized data page.
+            </p>
+
+            <h6>Account data modification</h6>
+            <p>
+                When you created your account, you had to pass some information - UserName, email address and password
+                (phone number not required). In <a asp-controller="User" asp-action="ModifyAccount">this</a> page you
+                can modify those data (you cannot modify email address).
+            </p>
+
+            <h6>Cubes collection</h6>
+            <p>
+                As written above, you need to add cubes to your cubes collection to have ossibility to measure
+                solves times. In <a asp-controller="User" asp-action="ShowMyCubesCollection" asp-route-userName="@User?.Identity?.Name">this</a>
+                page you can assign cubes to your cubes collection, rate every cube (in scale 1-5) and display brief info
+                about each cube. It is also possible for you to delete some cubes from you collection. Deleting cube
+                from collection does not delete series, that you created using this cube, from database. If you rated
+                some cube and you would like to change your rate, you can do this.
+            </p>
+
+            <hr class="mb-4 mt-2" />
+            <h5>Series</h5>
+            <h6>Best results</h6>
+            <p>
+                Best results page is simply presenting you your bes time for each cube or category. You can switch
+                between two modes of <a asp-controller="Series" asp-action="Best" asp-route-userName="@User?.Identity?.Name">this</a>
+                page (cubes mode and categories mode) by two buttons below the table.
+            </p>
+
+            <h6>Category trend</h6>
+            <p>
+                In this vie wyou can research a trend of you series/solves. Opening <a asp-controller="Series" asp-action="Trend" asp-route-userName="@User?.Identity?.Name">this</a>
+                ling will redirect you to this view. By default, the chart shows you ttrend of 50 last series of category
+                of series which was last used by you. So if your last serie is of category 3x3x3, this chart will whow
+                you your last 50 series of category 3x3x3 (all cubes in category). Of coursem you can filter series as
+                you want - to do that you can use "Adjust chart" button to filter series. You ca choose a time period,
+                specific category, cuba and category option. You can also specify how many results matching filters
+                should be displayed. By hoovering the mouse over a chart point, the tooltip showing series details will
+                be displayed.
+            </p>
+
+            <h6>Explore series</h6>
+            <p>
+                In <a asp-controller="Series" asp-action="Explore" asp-route-userName="@User?.Identity?.Name">explore series</a>
+                view you can explore every single solve that you created. This vew shows you a table, where are listed all
+                of your series, beginning of the youngest. As in the category trend view, you can use there similar filtering
+                options. Additional features are button in column "Details" and button in "No" column. By pressing the "No"
+                button you will download a series report to your local computer (*.txt file) - all data of selected serie
+                will be there. The button in "Details" clumn shows has text tha indicates how many solves is in specific
+                serie. By pressing it, you will see a popup window with chart, where you can investigate all of solves in serie.
+                There is a tooltip available for every bar in bar chart.
+            </p>
+
+            <hr class="mb-4 mt-2" />
+            <h5>Requests</h5>
+            <h6>Public requests</h6>
+            <p>
+                You can navigate to public requests view <a asp-controller="Requests" asp-action="PublicRequests">by this link</a>,
+                and there are all public requests created by all users (only marked as public requests). So if you want to send
+                a request, you can first verify if sych request already exists (if sombody else requested that before). There are
+                filtering tools available there for you.
+            </p>
+
+            <h6>Private requests</h6>
+            <p>
+                View of <a asp-controller="Requests" asp-action="PrivateRequests">your private requests</a> whows you page 
+                similar to public requests, but here you will se onlu requests created by you, and which was marked as private.
+                You can also use filters here (in case you made many requests). Another important thing is that your requests
+                will appear here only if they have not be closed by administrator/moderator. Closed requests are moved to archive
+                and are no longer available for you.
+            </p>
+
+            <p>
+                If you create a request, and administrator or moderator will reply for it, the responses amount will appar
+                as red label with amount of updated requests on the "Requests" menu button.
+            </p>
+
+            <h6>Create request</h6>
+            <p>
+                Creating <a asp-controller="Requests" asp-action="CreateRequests"> new request</a> page allows you to create
+                new request. All you need to do is to specify request topic (max 100 characters) and message (max 500 characters),
+                and select if this new request should be visible publicly or just by you.
+            </p>
+        </div>
+    </div>
+</div>
+
+@section scripts{ 
+    <environment names="Development">
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

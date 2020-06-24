@@ -1,0 +1,86 @@
+﻿@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+@await Component.InvokeAsync("RequestStateModal")
+
+<div id="ConversationModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Request's history</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <div class="bg-message rounded p-2">
+                    <div>
+                        <span>On <span id="ConvTimeSpan"></span>, <span id="ConvUserName"></span> wrote:</span>
+                    </div>
+                    <div>
+                        <span id="ConvMessage"></span>
+                    </div>
+                </div>
+                <div id="ModalResponses">
+                    ergergegerg
+                    <button>wreg</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="row row-cols-2">
+            <div class="col-10">
+                <h4>Requests archive</h4>
+                <table class="table table-sm table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="align-middle col-narrow">No</th>
+                            <th class="align-middle">UserName</th>
+                            <th class="align-middle">Time stamp</th>
+                            <th class="align-middle">Topic</th>
+                            <th class="align-middle">Replies</th>
+                            <th class="align-middle">Private</th>
+                            <th class="align-middle">Restore</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Requests">
+                    </tbody>
+                </table>
+
+                <div class="content-margin-sidebar d-flex justify-content-center mb-3" id="PaginationButtons">
+                </div>
+            </div>
+            <div class="col-2">
+                @await Component.InvokeAsync("RequestsFilter")
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    @if (User?.IsInRole("Administrator") == true || User?.IsInRole("Moderator") == true)
+    {
+        <environment names="Development">
+            <script src="~/Library/moment.js/moment.min.js" asp-append-version="true"></script>
+            <script src="~/Library/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
+            <script src="~/JS/Pagination.js" asp-append-version="true"></script>
+            <script src="~/JS/RequestsLib.js" asp-append-version="true"></script>
+            <script src="~/JS/RequestArchive.js" asp-append-version="true"></script>
+            <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+        </environment>
+        <environment names="Production">
+            <script src="~/Library/moment.js/moment.min.js" asp-append-version="true"></script>
+            <script src="~/Library/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
+            <script src="~/JS/Pagination.min.js" asp-append-version="true"></script>
+            <script src="~/JS/RequestsLib.min.js" asp-append-version="true"></script>
+            <script src="~/JS/RequestArchive.min.js" asp-append-version="true"></script>
+            <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+        </environment>
+    }
+}

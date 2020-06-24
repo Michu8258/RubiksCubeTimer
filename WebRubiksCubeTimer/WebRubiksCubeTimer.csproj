@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\JS\ScramblesManager.min.js" />
+    <Content Remove="wwwroot\JS\TimerSerie.min.js" />
+    <Content Remove="wwwroot\JS\Tools\ScrambleTools.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\Sidebar.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\Site.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\JS\ScramblesManager.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\JS\TimerSerie.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\JS\Tools\ScrambleTools.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.447" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\JS\ScramblesManager.min.js" />
+    <None Include="wwwroot\JS\TimerSerie.min.js" />
+    <None Include="wwwroot\JS\Tools\ScrambleTools.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationResources\ApplicationResources.csproj" />
+    <ProjectReference Include="..\MailSender\MailSender.csproj" />
+    <ProjectReference Include="..\Reports\Reports.csproj" />
+    <ProjectReference Include="..\Results\Results.csproj" />
+    <ProjectReference Include="..\TimerDataBase\TimerDataBase.csproj" />
+    <ProjectReference Include="..\TimerRequestsDataBase\TimerRequestsDataBase.csproj" />
+  </ItemGroup>
+
+</Project>

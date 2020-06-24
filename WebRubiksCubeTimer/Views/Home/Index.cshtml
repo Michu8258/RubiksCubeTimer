@@ -1,0 +1,105 @@
+﻿@model IndexBestTimesViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="col-10 offset-1">
+            <div class="border border-dark rounded p-2">
+                <h6>Users favourite categories</h6>
+                <canvas id="CategoriesPie" height="100"></canvas>
+            </div>
+            <h5 class="mt-3">Best times by category</h5>
+            <table class="table table-sm table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="align-middle col-narrow">No</th>
+                        <th class="align-middle">Category</th>
+                        <th class="align-middle">UserName</th>
+                        <th class="align-middle">Cube</th>
+                        <th class="align-middle">Time span</th>
+                        <th class="align-middle">Duration</th>
+                        <th class="align-middle">Category option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.CategoryBestTimes.Any())
+                    {
+                        @foreach (var time in Model.CategoryBestTimes)
+                        {
+                            <tr>
+                                <td class="align-middle">@time.Position</td>
+                                <td class="align-middle">@time.Serie.Cube.Category.Name</td>
+                                <td class="align-middle">@time.UserName</td>
+                                <td class="align-middle">@time.Serie.Cube.Manufacturer.Name @time.Serie.Cube.ModelName @time.Serie.Cube.PlasticColor.Name</td>
+                                <td class="align-middle">@time.Serie.StartTimeStamp.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                                <td class="align-middle">@time.Serie.ShortestResult.ToString("hh':'mm':'ss'.'fff")</td>
+                                <td class="align-middle">@time.Serie.SerieOption.Name</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="align-middle text-center" colspan="7">No data to display</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <h5 class="mt-3">Best times by cube</h5>
+            <table class="table table-sm table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="align-middle col-narrow">No</th>
+                        <th class="align-middle">Cube</th>
+                        <th class="align-middle">UserName</th>
+                        <th class="align-middle">Category</th>
+                        <th class="align-middle">Time span</th>
+                        <th class="align-middle">Duration</th>
+                        <th class="align-middle">Category option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.CubeBestTimes.Any())
+                    {
+                        @foreach (var time in Model.CubeBestTimes)
+                        {
+                            <tr>
+                                <td class="align-middle">@time.Position</td>
+                                <td class="align-middle">@time.Serie.Cube.Manufacturer.Name @time.Serie.Cube.ModelName @time.Serie.Cube.PlasticColor.Name</td>
+                                <td class="align-middle">@time.UserName</td>
+                                <td class="align-middle">@time.Serie.Cube.Category.Name</td>
+                                <td class="align-middle">@time.Serie.StartTimeStamp.ToString("dd-MM-yyyy HH:mm:ss")</td>
+                                <td class="align-middle">@time.Serie.ShortestResult.ToString("hh':'mm':'ss'.'fff")</td>
+                                <td class="align-middle">@time.Serie.SerieOption.Name</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="align-middle text-center" colspan="7">No data to display</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/Library/chart/Chart.min.js" asp-append-version="true"></script>
+        <script src="~/JS/ChartLib.js" asp-append-version="true"></script>
+        <script src="~/JS/Index.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/Library/chart/Chart.min.js" asp-append-version="true"></script>
+        <script src="~/JS/ChartLib.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Index.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

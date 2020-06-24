@@ -1,0 +1,309 @@
+﻿@model CubesPageViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div id="AddColorModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new plastic color</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <label class="d-flex">Color name</label>
+                <input name="NewColorInput" id="NewColorInput" oninput="NewColorLength(this.value)" class="form-control" />
+                <div class="text-danger d-flex invisible form-control-sm" id="NewColorLength">New color name should have at least 5 characters.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="AddConfirmColorButton" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DeleteColorModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Remove plastic color</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <span>Are you sure You want to delete color: <strong id="ColorToDelete"></strong>?</span>
+                <span class="d-flex">This operation is irreversible.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="DeleteColorButton" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="AddManuModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Define new manufacturer</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="d-flex">Name</label>
+                    <label class="text-danger d-none" id="NewManuNameAlert">Name is required, make sure not to use any special characters</label>
+                    <input id="NewManuName" class="form-control" type="text" />
+                </div>
+                <div class="form-group">
+                    <label class="d-flex">Country</label>
+                    <label class="text-danger d-none" id="NewManuCountryAlert">Country is required, make sure not to use any special characters</label>
+                    <input id="NewManuCountry" class="form-control" type="text" />
+                </div>
+                <div class="form-group">
+                    <label class="d-flex">Foundation year</label>
+                    <label class="text-danger d-none" id="NewManuYearAlert">Insert year between 0 and 2500</label>
+                    <input id="NewManuYear" class="form-control" type="number" />
+                </div>
+                <p>All fields are required.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="AddManuButton">Create</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModifyManuModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modify manufacturer <strong id="ModifyManuNameH"></strong></h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="ModManuIdent" />
+                <div class="form-group">
+                    <label class="d-flex">Name</label>
+                    <label class="text-danger d-none" id="ModManuNameAlert">Name is required, make sure not to use any special characters</label>
+                    <input id="ModManuName" class="form-control" type="text" />
+                </div>
+                <div class="form-group">
+                    <label class="d-flex">Country</label>
+                    <label class="text-danger d-none" id="ModManuCountryAlert">Country is required, make sure not to use any special characters</label>
+                    <input id="ModManuCountry" class="form-control" type="text" />
+                </div>
+                <div class="form-group">
+                    <label class="d-flex">Foundation year</label>
+                    <label class="text-danger d-none" id="ModManuYearAlert">Insert year between 0 and 2500</label>
+                    <input id="ModManuYear" class="form-control" type="number" />
+                </div>
+                <p>All fields are required.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="ModManuButton">Accept</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DeleteManuModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Remove cubes manufacturer</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <span>Are you sure You want to delete color: <strong id="ManuToDelete"></strong>?</span>
+                <span class="d-flex">This operation is irreversible.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="DeleteManuButton" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DeleteCubeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="CubeToDelete" />
+            <div class="modal-header">
+                <h5 class="modal-title">Remove cube definition</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <span>Are you sure You want to delete cube: <strong id="CubeToDeleteName"></strong>?</span>
+                <span class="d-flex">This operation is irreversible.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="DeleteCubeButton" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="row row-cols-2">
+            <div class="col-8">
+                <h5>Manufacturers</h5>
+                <input type="hidden" id="AmountManu" value="@Model.Manufacturers.Count()" />
+                <table class="table table-sm table-bordered table-striped" id="ManuTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="align-middle">Manufacturer name</th>
+                            <th class="align-middle">Country</th>
+                            <th class="align-middle">Foundation year</th>
+                            <th class="align-middle col-narrow" colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ManuTableBody">
+                        @if (Model.Manufacturers.Any())
+                        {
+                            @foreach (var manu in Model.Manufacturers)
+                            {
+                                <tr>
+                                    <td class="align-middle">@manu.Name</td>
+                                    <td class="align-middle">@manu.Country</td>
+                                    <td class="align-middle">@manu.FoundationYear</td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-danger text-white" onclick="DeleteManuOpenModal('@manu.Name')">Delete</button>
+                                    </td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-secondary text-white" onclick="ModifyManuModal('@manu.Identity',
+                                            '@manu.Name', '@manu.Country', '@manu.FoundationYear')">
+                                            Modify
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center">No manufacturers defined</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button class="btn btn-sm btn-dark text-white" id="AddManufacturer">Add new</button>
+            </div>
+            <div class="col-4">
+                <h5>Cubes plastic colors</h5>
+                <input type="hidden" id="PlasticColorTableAmount" value="@Model.PlasticColors.Count()" />
+                <table class="table table-sm table-bordered table-striped" id="PlasticColorTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="align-middle">Name</th>
+                            <th class="align-middle col-narrow">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ColorTableBody">
+                        @if (Model.PlasticColors.Any())
+                        {
+                            @foreach (var color in Model.PlasticColors)
+                            {
+                                <tr>
+                                    <td class="align-middle">@color.Name</td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-danger text-white p-1" onclick="DeleteColor('@color.Name')">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center">No colors defined</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button class="btn btn-sm btn-dark text-white" id="AddColorButton">Add new</button>
+            </div>
+        </div>
+        <div class="row row-cols-1 my-4">
+            <div class="col-12">
+                <h5>Cubes list</h5>
+                <table id="CubesTable" class="table table-sm table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="align-middle">Manufacturer</th>
+                            <th class="align-middle">Model name</th>
+                            <th class="align-middle">Category</th>
+                            <th class="align-middle">Plastic color</th>
+                            <th class="align-middle">Release year</th>
+                            <th class="align-middle">Rating</th>
+                            <th class="align-middle">Rates</th>
+                            <th class="align-middle">WCA permission</th>
+                            <th class="align-middle col-narrow" colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="CubeTableBody">
+                        @if (Model.Cubes.Any())
+                        {
+                            foreach (var cube in Model.Cubes)
+                            {
+                                <tr>
+                                    <td class="align-middle">@cube.Manufacturer.Name</td>
+                                    <td class="align-middle">@cube.ModelName</td>
+                                    <td class="align-middle">@cube.Category.Name</td>
+                                    <td class="align-middle">@cube.PlasticColor.Name</td>
+                                    <td class="align-middle">@cube.ReleaseYear</td>
+                                    <td class="align-middle">@cube.Rating</td>
+                                    <td class="align-middle">@cube.RatesAmount</td>
+                                    <td class="align-middle">
+                                        @if (cube.WcaPermission == true)
+                                        {
+                                            <input disabled type="checkbox" checked />
+                                        }
+                                        else
+                                        {
+                                            <input disabled type="checkbox" />
+                                        }
+                                    </td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-danger text-white" onclick="DeleteCubeButton('@cube.Identity', '@cube.ModelName')">Delete</button>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a class="btn btn-sm btn-secondary text-white"
+                                           asp-action="ModifyCube" asp-controller="Cubes" asp-route-identity="@cube.Identity">Modify</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">No cubes defined</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <a asp-action="AddCube" class="btn btn-sm btn-dark text-white" id="AddCubeButton">Add new</a>
+            </div>
+        </div>
+
+        <div class="content-margin d-flex justify-content-center mb-3" id="PaginationButtons"></div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/Pagination.js" asp-append-version="true"></script>
+        <script src="~/JS/CubesManager.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/Pagination.min.js" asp-append-version="true"></script>
+        <script src="~/JS/CubesManager.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -1,0 +1,61 @@
+﻿@model AddUserModel
+
+<div class="form-centered">
+    <div>
+        <div class="form-left-align">
+            <h4>Add new user</h4>
+        </div>
+
+        <div asp-validation-summary="All" class="form-left-align text-danger"></div>
+
+        <div class="form-left-align">
+            <form asp-action="CreateNewUser" method="post">
+                <input type="hidden" asp-for="ReturnUrl" value="@ViewBag.ReturnUrl" />
+                <div class="form-group">
+                    <label asp-for="UserName">User name</label>
+                    <input asp-for="UserName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email">Email address</label>
+                    <input asp-for="Email" type="email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber">Phone number</label>
+                    <input asp-for="PhoneNumber" type="number" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailConfirmationString">Email verification key</label>
+                    <input asp-for="EmailConfirmationString" class="form-control" readonly />
+                    <button type="button" onclick="randomizeVerificationKey('EmailConfirmationString')"
+                            class="btn btn-secondary form-button-margin">
+                        Autogenerate
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmEmail">Mark email address as confirmed</label>
+                    <select asp-for="ConfirmEmail" class="form-control">
+                        <option selected disabled>Please select</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-dark">Create</button>
+                <a asp-controller="UserAdmin" asp-action="UsersList" class="btn btn-light">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/RandomVerificationKey.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/RandomVerificationKey.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -1,0 +1,314 @@
+﻿@model TimerViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel() { CategoryID = Model.CategoryID })
+
+@section stylesheets{
+    <link rel="stylesheet" href="~/Library/chart/Chart.min.css" />
+}
+
+@if (Model.CurrentScramble?.Scramble?.MovesAmount > 0)
+{
+    <div id="ScramblesModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Available scrambles for category @Model.CategoryName</h6>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label>Selected scramble</label>
+                        <select class="form-control" id="SelectedScrambleId">
+                            @foreach (var scramble in Model.ScrambleNames)
+                            {
+                                @if (scramble.Value == Model.CurrentScramble.Scramble.Name)
+                                {
+                                    <option selected value="@scramble.Key">@scramble.Value</option>
+                                }
+                                else
+                                {
+                                    <option value="@scramble.Key">@scramble.Value</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="mt-3">
+                        <label>Adjust scramble length</label>
+                        <div class="row row-cols-2">
+                            <div class="col-6">
+                                <label>Min moves: <strong id="MinMovesAmount">@Model.CurrentScramble.Scramble.MinimumScrambleLength</strong></label>
+                            </div>
+                            <div class="col-6 d-flex justify-content-end">
+                                <label>Max moves: <strong id="MaxMovesAmount">@Model.CurrentScramble.Scramble.MaximumScrambleLength</strong></label>
+                            </div>
+                        </div>
+                        <input class="form-control" asp-for="CurrentScramble.Scramble.DefaultScrambleLength" type="number"/>
+                    </div>
+                    <div class="mt-3">
+                        <div class="form-control">
+                            <input type="checkbox" asp-for="CurrentScramble.Scramble.EliminateDuplicates"/>
+                            <label asp-for="CurrentScramble.Scramble.EliminateDuplicates">Eliminate moves duplicates</label>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div>
+                            <label>Top wall stickers color: <strong id="TopWallColor">@Model.CurrentScramble.Scramble.TopColor</strong></label>
+                        </div>
+                        <div>
+                            <label>Front wall stickers color: <strong id="FrontWallColor">@Model.CurrentScramble.Scramble.FrontColor</strong></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-dark" id="ScrambleConfirmButton">Confirm</button>
+                    <button type="button" class="btn btn-sm btn-secondary" id="ScrambleCancelButton"
+                            data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div>
+            <h4>Series details data</h4>
+            <input type="hidden" id="UserID" value="@Model.UserId" />
+            <input type="hidden" id="CategoryID" value="@Model.CategoryID" />
+            <input type="hidden" id="CubeID" value="@Model.CubeID" />
+            <input type="hidden" id="OptionID" value="@Model.OptionID" />
+            <input type="hidden" id="SeriesID" value="@Model.SeriesId" />
+            <table class=" table table-sm table-bordered table-striped" id="SeriesDetails">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="align-middle">User name</th>
+                        <th class="align-middle">Serie ID</th>
+                        <th class="align-middle">Category</th>
+                        <th class="align-middle">Category option</th>
+                        <th class="align-middle">Cube</th>
+                        <th class="align-middle">Start time</th>
+                        <th class="align-middle">Serie finished</th>
+                        <th class="align-middle">DNF?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (string.IsNullOrEmpty(Model.Username))
+                    {
+                        <tr>
+                            <td class="align-middle text-center" colspan="8">No data</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="align-middle">@Model.Username</td>
+                            <td class="align-middle" id="TableSerieId">@Model.SeriesId</td>
+                            <td class="align-middle">@Model.CategoryName</td>
+                            <td class="align-middle">@Model.CategoryOptionName</td>
+                            <td class="align-middle">@Model.CubeDescription</td>
+                            <td class="align-middle" id="TableSerieStartTime"></td>
+                            <td class="align-middle">
+                                @if (Model.SerieFinished)
+                                {
+                                    <input asp-for="SerieFinished" type="checkbox" disabled checked />
+                                }
+                                else
+                                {
+                                    <input asp-for="SerieFinished" type="checkbox" disabled />
+                                }
+                            </td>
+                            <td class="align-middle">
+                                @if (Model.AtLeastOneDNF)
+                                {
+                                    <input asp-for="AtLeastOneDNF" type="checkbox" disabled checked />
+                                }
+                                else
+                                {
+                                    <input asp-for="AtLeastOneDNF" type="checkbox" disabled />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row row-cols-2">
+            <div class="col-8">
+                <div class="mb-2">
+                    <div class="row row-cols-2">
+                        <div class="col-5">
+                            <h6>Instructions</h6>
+                            <p class="text-justify">
+                                To start the timer hit spacebar. Then proceed with solving the cube, and hit spacebar
+                                again to stop the timer. Timer starts on spacebar release and stops on spacebar press.
+                            </p>
+                        </div>
+                        <div class="col-7 d-flex justify-content-center align-items-center">
+                            <div class="font-digital" id="MeasuredTime">00:00:00.000</div>
+                        </div>
+                    </div>
+                    <div id="ScrambleContainer">
+                    </div>
+                </div>
+                <div class="my-2 rounded bg-warning p-3 d-none" id="SolveDone">
+                    <h6>Set this solve data and send your result</h6>
+                    <div class=" row row-cols-3">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="checkbox" id="MarkAsDNF" name="MarkAsDNF" />
+                                <label for="MarkAsDNF">Mark solve as DNF</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="checkbox" id="AddPenalty" name="AddPenalty" />
+                                <label for="AddPenalty">Add 2 seconds penalty</label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <input type="checkbox" id="MarkAsFinished" name="MarkAsFinished" />
+                                <label for="MarkAsFinished">Mark serie as finished</label>
+                                <p class="text-danger text-justify">
+                                    Marking serie as finished blocks possibility of adding new solve to serie.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-dark text-white" id="SendSolveResult">Send result</button>
+                    <button type="button" class="btn btn-sm btn-danger text-white" id="DiscardSolveResult">Discard this result</button>
+                </div>
+                <div>
+                    <div class="text-warning d-flex justify-content-center">Refreshing or redirecting the page will end the serie.</div>
+                    <h6>Series times chart</h6>
+                    <canvas id="TimesChart" height="100"></canvas>
+                </div>
+            </div>
+            <div class="col-4">
+                <div>
+                    <h5>Current series solves</h5>
+                    <table class="table table-sm table-bordered table-striped" id="SolvesData">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="align-middle">No.</th>
+                                <th class="align-middle">Duration</th>
+                                <th class="align-middle">Time span</th>
+                                <th class="align-middle">DNF</th>
+                                <th class="align-middle">Penalty (2s)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="SolvesTableBody">
+                            @if (Model.Solves.Any())
+                            {
+                                @foreach (var solve in Model.Solves)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@solve.Number</td>
+                                        <td class="align-middle">@solve.Duration.ToString("hh':'mm':'ss'.'fff")</td>
+                                        <td class="align-middle">@solve.TimeSpan</td>
+                                        <td>
+                                            @if (solve.DNF)
+                                            {
+                                                <input type="checkbox" disabled checked />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" disabled />
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (solve.Penalty)
+                                            {
+                                                <input type="checkbox" disabled checked />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" disabled />
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="align-middle text-center" colspan="5">No data</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h5>Series times</h5>
+                    <table class="table table-sm table-borderless" id="SerieTimeData">
+                        <thead>
+                            <tr>
+                                <th class="col-narrow">Type</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <label class="col-narrow">Best result:</label>
+                                </td>
+                                <td>
+                                    <strong id="BestTime">@Model.ShortestResult.ToString("hh':'mm':'ss'.'fff")</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="col-narrow">Worst result:</label>
+                                </td>
+                                <td>
+                                    <strong id="WorstTime">@Model.LongestResult.ToString("hh':'mm':'ss'.'fff")</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="col-narrow">Average time:</label>
+                                </td>
+                                <td>
+                                    <strong id="AverageTime">@Model.AverageTime.ToString("hh':'mm':'ss'.'fff")</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="col-narrow">Mean of 3:</label>
+                                </td>
+                                <td>
+                                    <strong id="MeanOf3">@Model.MeanOf3.ToString("hh':'mm':'ss'.'fff")</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="col-narrow">Average of 5:</label>
+                                </td>
+                                <td>
+                                    <strong id="AverageOf5">@Model.AverageOf5.ToString("hh':'mm':'ss'.'fff")</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <script src="~/Library/chart/Chart.min.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/JS/ChartLib.js" asp-append-version="true"></script>
+        <script src="~/JS/Tools/ScrambleTools.js" asp-append-version="true"></script>
+        <script src="~/JS/TimerSerie.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/ChartLib.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Tools/ScrambleTools.min.js" asp-append-version="true"></script>
+        <script src="~/JS/TimerSerie.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

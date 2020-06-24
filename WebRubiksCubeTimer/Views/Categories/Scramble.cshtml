@@ -1,0 +1,301 @@
+﻿@model ScrambleManagerViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div id="AllCategoriesModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Available categories</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                @if (Model.AllCategories.Any())
+                {
+                    @foreach (var category in Model.AllCategories)
+                    {
+                        @if (category.Identity == Model.CategoryId)
+                        {
+                            <span>
+                                <button class="btn btn-sm btn-secondary text-white my-1"
+                                        onclick="ChangeCategory('@category.Identity')">
+                                    @category.Name category
+                                </button>
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                <button class="btn btn-sm btn-dark text-white my-1"
+                                        onclick="ChangeCategory('@category.Identity')">
+                                    @category.Name category
+                                </button>
+                            </span>
+                        }
+                    }
+                }
+                else
+                {
+                    <label>No categories defined</label>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="CategoriesNoScrambleModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Categories without anu scramble</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                @if (Model.CategoriesWithNoScramble.Any())
+                {
+                    @foreach (var category in Model.CategoriesWithNoScramble)
+                    {
+                        @if (category.Identity == Model.CategoryId)
+                        {
+                            <span>
+                                <button class="btn btn-sm btn-secondary text-white my-1"
+                                        onclick="ChangeCategory('@category.Identity')">
+                                    @category.Name category
+                                    </button>
+                                </span>
+                        }
+                        else
+                        {
+                            <span>
+                                <button class="btn btn-sm btn-dark text-white my-1"
+                                        onclick="ChangeCategory('@category.Identity')">
+                                    @category.Name category
+                                    </button>
+                                </span>
+                        }
+                    }
+                }
+                else
+                {
+                    <label>No categories defined</label>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DeleteScrambleModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="DeleteScrambleId" />
+            <div class="modal-header">
+                <h6 class="modal-title">Delete scramble definition</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <span>Are you sure you want to delete <strong id="ScrName"></strong> scramble for 
+                <strong id="CatName"></strong> category?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-dark" id="ScrambleDeletionConfirmedButton"
+                        data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="MovesModificationModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="ModifiedMovesScrambleId" />
+            <div class="modal-header">
+                <h6 class="modal-title">Scramble moves modification</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span>
+                        Modification of moves collection of <strong id="ScrNameM"></strong> scramble in
+                        <strong id="CatNameM"></strong> category.
+                    </span>
+                </div>
+                <div class="form-group mt-3">
+                    <label>Available moves:</label>
+                    <textarea class="form-control" id="MovesList" style="height: 200px; text-wrap: normal"></textarea>
+                </div>
+                <div class="text-warning">
+                    Please specify moves as string of characters, where moves are separated by space sign.
+                </div>
+                <div class="text-danger">
+                    <span id="MoveModificationErrorMessage"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-dark" id="MovesModificationConfirmButton">
+                    Confirm
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        @if (string.IsNullOrEmpty(Model.CategoryName))
+        {
+            <h4>No defined scramble definitions</h4>
+        }
+        else
+        {
+            <h4>Defined scramble definitions for category @Model.CategoryName</h4>
+        }
+        <input type="hidden" asp-for="CategoryId" />
+        <div>
+            <table class="table table-sm table-bordered table-striped" id=" ScramblesTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="align-middle">Name</th>
+                        <th class="align-middle">Enabled</th>
+                        <th class="align-middle">Min length</th>
+                        <th class="align-middle">Max length</th>
+                        <th class="align-middle">Default length</th>
+                        <th class="align-middle">Moves amount</th>
+                        <th class="align-middle">Top color</th>
+                        <th class="align-middle">Front color</th>
+                        <th class="align-middle">Duplicates</th>
+                        <th class="align-middle">Regeneration</th>
+                        <th class="align-middle col-narrow">Is default</th>
+                        <th class="align-middle col-narrow" colspan="3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Scrambles.Any())
+                    {
+                        foreach (var scramble in Model.Scrambles)
+                        {
+                            <tr>
+                                <td class="align-middle">@scramble.Name</td>
+                                @if (scramble.Disabled)
+                                {
+                                    <td class="align-middle">No</td>
+                                }
+                                else
+                                {
+                                    <td class="align-middle">Yes</td>
+                                }
+                                <td class="align-middle">@scramble.MinimumScrambleLength</td>
+                                <td class="align-middle">@scramble.MaximumScrambleLength</td>
+                                <td class="align-middle">@scramble.DefaultScrambleLength</td>
+                                <td class="align-middle">@scramble.MovesAmount</td>
+                                <td class="align-middle">@scramble.TopColor</td>
+                                <td class="align-middle">@scramble.FrontColor</td>
+                                @if (scramble.EliminateDuplicates)
+                                {
+                                    <td class="align-middle">Not allowed</td>
+                                }
+                                else
+                                {
+                                    <td class="align-middle">Allowed</td>
+                                }
+                                @if (scramble.AllowRegenerate)
+                                {
+                                    <td class="align-middle">Allowed</td>
+                                }
+                                else
+                                {
+                                    <td class="align-middle">Not allowed</td>
+                                }
+                                @if (scramble.Default)
+                                {
+                                    <td class="align-middle">Yes</td>
+                                }
+                                else
+                                {
+                                    <td class="align-middle">
+                                        <button type="button" class="btn badge badge-warning text-black-50"
+                                                onclick="SetAsDefault('@Model.CategoryId', '@scramble.Identity')">
+                                        Set as default
+                                        </button>
+                                    </td>
+                                }
+                                <td class="align-middle">
+                                    <button class="btn badge badge-dark text-white"
+                                            onclick="EditMoves('@scramble.Identity')">
+                                        Modify moves
+                                    </button>
+                                </td>
+                                <td class="align-middle">
+                                    <button class="btn badge badge-primary text-white"
+                                            onclick="ModifyDefinition('@scramble.Identity')">
+                                        Modify definition
+                                    </button>
+                                </td>
+                                <td class="align-middle">
+                                    <button class="btn badge badge-danger text-white"
+                                            onclick="ConfirmScrambleDeletion('@scramble.Identity', '@scramble.Name', '@Model.CategoryName')">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="14" class="align-middle text-center text-dark">No scrambles defined</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                @if (Model.CategoryId > 0)
+                {
+                    <button type="button" class="btn btn-sm btn-dark text-white mx-1"
+                            id="AddScrambleButton">
+                        Define new scramble
+                    </button>
+                }
+                @if (Model.CategoriesWithNoScramble.Count() > 0)
+                {
+                    <button type="button" class="btn btn-sm btn-dark text-white mx-1"
+                            id="CategoriesWithNoScrambleButton">
+                        Show categories with no scramble
+                    </button>
+                }
+                @if (Model.AllCategories.Count() > 1)
+                {
+                    <button type="button" class="btn btn-sm btn-dark text-white ml-1"
+                            id="ChangeCategoryButton">
+                        ChangeCategory
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+<div class="content-margin-sidebar d-flex justify-content-center mb-3" id="PaginationButtons">
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/Pagination.js" asp-append-version="true"></script>
+        <script src="~/JS/ScramblesManager.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/Pagination.min.js" asp-append-version="true"></script>
+        <script src="~/JS/ScramblesManager.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

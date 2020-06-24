@@ -1,0 +1,149 @@
+﻿@model UserMainViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+@section stylesheets{
+    <link rel="stylesheet" href="~/Library/chart/Chart.min.css" />
+}
+
+<input type="hidden" readonly disabled id="UserID" value="@Model.UserId" />
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="row row-cols-2">
+            <div class="col-6">
+                <div class="border border-dark rounded ml-1 p-2">
+                    <h6>Your favorite categories</h6>
+                    <canvas id="CategoryPie" height="150"></canvas>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="border border-dark rounded mr-1 p-2">
+                    <h6>Your favourite cubes</h6>
+                    <canvas id="CubePie" height="150"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-2 mt-3">
+            <div class="col-6">
+                <div class="ml-1">
+                    <h6>Your ranked positions (by category)</h6>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="align-middle col-narrow">No</th>
+                                <th class="align-middle">Category</th>
+                                <th class="align-middle">Position</th>
+                                <th class="align-middle">Solves</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Categoreis.Any())
+                            {
+                                for (int i = 0; i < Model.Categoreis.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@(i+1)</td>
+                                        <td class="align-middle">@Model.Categoreis[i].Category.Name</td>
+                                        @if (@Model.Categoreis[i].Position > 0)
+                                        {
+                                            <td class="align-middle">@Model.Categoreis[i].Position</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="align-middle">No data</td>
+                                        }
+                                        @if (@Model.Categoreis[i].SolvesAmount > 0)
+                                        {
+                                            <td class="align-middle">@Model.Categoreis[i].SolvesAmount</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="align-middle">No data</td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="align-middle text-center" colspan="4">No data to display</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="mr-1">
+                    <h6>Your ranked positions (by cube)</h6>
+                    <table class="table table-sm table-bordered table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="align-middle col-narrow">No</th>
+                                <th class="align-middle">Cube</th>
+                                <th class="align-middle">Position</th>
+                                <th class="align-middle">Solves</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Categoreis.Any())
+                            {
+                                for (int i = 0; i < Model.Cubes.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@(i+1)</td>
+                                        <td class="align-middle">
+                                            @Model.Cubes[i].Cube.Manufacturer.Name @Model.Cubes[i].Cube.ModelName @Model.Cubes[i].Cube.PlasticColor.Name
+                                        </td>
+                                        @if (@Model.Cubes[i].Position > 0)
+                                        {
+                                            <td class="align-middle">@Model.Cubes[i].Position</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="align-middle">No data</td>
+                                        }
+                                        @if (@Model.Cubes[i].SolvesAmount > 0)
+                                        {
+                                            <td class="align-middle">@Model.Cubes[i].SolvesAmount</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="align-middle">No data</td>
+                                        }
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="align-middle text-center" colspan="4">No data to display</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3">
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/Library/chart/Chart.min.js" asp-append-version="true"></script>
+        <script src="~/JS/ChartLib.js" asp-append-version="true"></script>
+        <script src="~/JS/UserAccount.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/Library/chart/Chart.min.js" asp-append-version="true"></script>
+        <script src="~/JS/ChartLib.min.js" asp-append-version="true"></script>
+        <script src="~/JS/UserAccount.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

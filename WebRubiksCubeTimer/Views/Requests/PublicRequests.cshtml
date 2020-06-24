@@ -1,0 +1,40 @@
+﻿@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="col-10 offset-2">
+            <div class="row row-cols-2">
+                <div class="col-9">
+                    <h4>Public requests</h4>
+                    <div id="Requests">
+                    </div>
+                </div>
+                <div class="col-3">
+                    @await Component.InvokeAsync("RequestsFilter")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-margin-sidebar d-flex justify-content-center mb-3" id="PaginationButtons">
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/Library/moment.js/moment.min.js" asp-append-version="true"></script>
+        <script src="~/Library/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Pagination.js" asp-append-version="true"></script>
+        <script src="~/JS/RequestsLib.js" asp-append-version="true"></script>
+        <script src="~/JS/RequestsPublic.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/Library/moment.js/moment.min.js" asp-append-version="true"></script>
+        <script src="~/Library/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Pagination.min.js" asp-append-version="true"></script>
+        <script src="~/JS/RequestsLib.min.js" asp-append-version="true"></script>
+        <script src="~/JS/RequestsPublic.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

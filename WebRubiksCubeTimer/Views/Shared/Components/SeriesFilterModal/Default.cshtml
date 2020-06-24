@@ -1,0 +1,64 @@
+﻿@model Dictionary<string, int>
+
+<input type="hidden" value="@ViewBag.Limit" id="DefaultLimit" />
+
+<div id="AdjustModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change chart parameters</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Range start date</label>
+                    <div class="input-group date" id="StartTimeStamp" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#StartTimeStamp" placeholder="No date" id="StartDate" />
+                        <div class="input-group-append" data-target="#StartTimeStamp" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Range end date</label>
+                    <div class="input-group date" id="EndTimeStamp" data-target-input="nearest">
+                        <input type="text" class="form-control datetimepicker-input" data-target="#EndTimeStamp" placeholder="No date" id="EndDate" />
+                        <div class="input-group-append" data-target="#EndTimeStamp" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <select class="form-control" id="CategoryId">
+                        <option selected disabled value="0">No category selected</option>
+                        @foreach (var category in Model)
+                        {
+                            <option value="@category.Value">@category.Key</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cube</label>
+                    <select class="form-control" id="CubeId" disabled>
+                        <option selected disabled value="0">No cube selected</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Category option</label>
+                    <select class="form-control" id="CategoryOptionId" disabled>
+                        <option selected disabled value="0">No option selected</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Series limit</label>
+                    <input type="number" class="form-control" id="SeriesAmount" value="@ViewBag.Limit" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-dark text-white" data-dismiss="modal" id="UpdateButton">Update</button>
+                <button type="button" class="btn btn-sm btn-secondary text-white" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

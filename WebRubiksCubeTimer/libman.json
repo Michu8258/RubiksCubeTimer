@@ -1,0 +1,40 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "provider": "cdnjs",
+      "library": "jquery@3.4.1",
+      "destination": "wwwroot/Library/jquery/"
+    },
+    {
+      "library": "bootstrap@4.4.1",
+      "destination": "wwwroot/Library/bootstrap/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "Chart.js@2.9.3",
+      "destination": "wwwroot/Library/chart/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "font-awesome@5.13.0",
+      "destination": "wwwroot/Library/font-awesome/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "tempusdominus-bootstrap-4@5.1.2",
+      "destination": "wwwroot/Library/tempusdominus-bootstrap-4/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "moment.js@2.24.0",
+      "destination": "wwwroot/Library/moment.js/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-dateFormat@1.0",
+      "destination": "wwwroot/Library/jquery-dateFormat/"
+    }
+  ]
+}

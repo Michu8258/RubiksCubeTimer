@@ -1,0 +1,64 @@
+﻿@model UserModel
+
+<div class="form-centered">
+    <div>
+        <div class="form-left-align">
+            <h4>Edit user data</h4>
+        </div>
+
+        <div asp-validation-summary="All" class="form-left-align text-danger"></div>
+
+        <div class="form-left-align">
+            <form asp-action="EditUser" method="post">
+                <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+                <div class="form-group">
+                    <label asp-for="Id">Identifier</label>
+                    <input asp-for="Id" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label asp-for="UserName">User name</label>
+                    <input asp-for="UserName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email">Email address</label>
+                    <input asp-for="Email" type="email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input name="password" type="password" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailVerificationKey">Email verification key</label>
+                    <input asp-for="EmailVerificationKey" class="form-control" readonly />
+                    <button type="button" onclick="randomizeVerificationKey('EmailVerificationKey')"
+                            class="btn btn-secondary form-button-margin">
+                        Autogenerate
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber">Phone number</label>
+                    <input asp-for="PhoneNumber" type="number" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailConfirmed">Mark email address as confirmed</label>
+                    <select asp-for="EmailConfirmed" class="form-control">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-dark">Save</button>
+                <a href="@ViewBag.ReturnUrl" class="btn btn-light">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/RandomVerificationKey.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/RandomVerificationKey.min.js" asp-append-version="true"></script>
+    </environment>
+}

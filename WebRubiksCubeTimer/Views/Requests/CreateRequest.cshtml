@@ -1,0 +1,50 @@
+﻿@model CreateRequestViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="col-6 offset-3">
+            <h5>Create new request</h5>
+            <div class="text-warning text-justify">
+                Request is a message for administrator or moderator. For example, if you notice that there is no
+                globally defined cube that you have, you can write a request to add such cube to global collection.
+            </div>
+            <form asp-action="CreateRequest" method="post">
+                <input type="hidden" asp-for="TopicMaxLength" value="@Model.TopicMaxLength" />
+                <input type="hidden" asp-for="MessageMaxLength" value="@Model.MessageMaxLength" />
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Topic">Request topic</label>
+                    <input asp-for="Topic" type="text" placeholder="Insert tittle here" class="form-control" />
+                    <label id="TopicAmount"></label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message">Request message</label>
+                    <textarea asp-for="Message" placeholder="Insert request message here" class="form-control" style="height: 300px"></textarea>
+                    <label id="MessageAmount"></label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PublicRequest">Mark request as public</label>
+                    <input type="checkbox" asp-for="PublicRequest" class="form-check" />
+                </div>
+                <button class="btn btn-sm btn-dark text-white">Confirm</button>
+                <a class="btn btn-sm btn-secondary text-white" asp-action="ShowMyAccount" asp-controller="User"
+                   asp-route-userName="@User?.Identity?.Name">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Library/moment.js/moment.min.js" asp-append-version="true"></script>
+    <script src="~/Library/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
+    <environment names="Development">
+        <script src="~/JS/RequestsLib.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/RequestsLib.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

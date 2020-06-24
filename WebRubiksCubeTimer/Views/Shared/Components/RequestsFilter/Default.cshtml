@@ -1,0 +1,27 @@
+﻿<div class="position-fixed align-content-stretch mt-4 pt-2">
+    <div class="form-group">
+        <label>Range start date</label>
+        <div class="input-group date" id="StartTimeStamp" data-target-input="nearest">
+            <input type="text" class="form-control datetimepicker-input" data-target="#StartTimeStamp"
+                   placeholder="No date" id="StartDate" />
+            <div class="input-group-append" data-target="#StartTimeStamp" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Range end date</label>
+        <div class="input-group date" id="EndTimeStamp" data-target-input="nearest">
+            <input type="text" class="form-control datetimepicker-input" data-target="#EndTimeStamp"
+                   placeholder="No date" id="EndDate" />
+            <div class="input-group-append" data-target="#EndTimeStamp" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Topic contains</label>
+        <input type="text" class="form-control" id="TopicFilter" placeholder="No topic filter" />
+    </div>
+    <button type="button" class="btn btn-sm btn-dark text-white" id="FilterButton">Filter</button>
+</div>

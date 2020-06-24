@@ -1,0 +1,53 @@
+﻿@model RequestViewComponentViewModel
+
+@if (Model.Display)
+{
+    <div class="accordion py-2" id="RequestsTools">
+        <div>
+            <div class="my-0 py-0 d-flex flex-column">
+                <button class="btn btn-sm btn-dark text-left" type="button" data-toggle="collapse" data-target="#OptionsRequests"
+                        onclick="Autohide('Requests')">
+                    <span>
+                        Requests
+                    </span>
+                    <span id="AmountOfRequestsUserSpan">
+                        @if (Model.AmountOfNewStatesUser > 0)
+                        {
+                            <i class="badge badge-danger" id="AmountOfRequestsUser">@Model.AmountOfNewStatesUser</i>
+                        }
+                    </span>
+                    <span class="align-items-center fa-pull-right">
+                        <i class="fa @(Model.ControllerName == "Requests" ? "fa-angle-up" : "fa-angle-down")" text-white" id="ArrowRequests"></i>
+                    </span>
+                </button>
+            </div>
+            <div id="OptionsRequests" class="collapse @(Model.ControllerName == "Requests" ? "show" : "hide")" aria-labelledby="headingOne" data-parent="#RequestsTools">
+                <div>
+                    <a asp-action="PublicRequests" asp-controller="Requests"
+                       class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Show public requests</a>
+                    <a asp-action="PrivateRequests" asp-controller="Requests"
+                       class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Show my private requests</a>
+                    <a asp-action="CreateRequest" asp-controller="Requests"
+                       class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Create new request</a>
+                    @if (Model.AdminOrMod)
+                    {
+                        <a asp-action="RequestsManager" asp-controller="Requests"
+                           class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">
+                            <span>
+                                Requests manager
+                                <span id="AmountOfRequestsAdminSpan">
+                                    @if (Model.AmountOfNewStatesAdmin > 0)
+                                    {
+                                        <i class="badge badge-danger" id="AmountOfRequestsAdmin">@Model.AmountOfNewStatesAdmin</i>
+                                    }
+                                </span>
+                            </span>
+                        </a>
+                        <a asp-action="RequestsArchive" asp-controller="Requests"
+                           class="btn btn-sm bg-light d-flex flex-column my-1 py-1 text-left">Explore closed cases</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

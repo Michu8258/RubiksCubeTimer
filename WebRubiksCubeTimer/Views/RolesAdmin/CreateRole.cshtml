@@ -1,0 +1,22 @@
+﻿@model AddRoleModel
+
+<div class="form-centered">
+    <div>
+        <div class="form-left-align">
+            <h4>Create new user role</h4>
+        </div>
+
+        <div asp-validation-summary="All" class="form-left-align text-danger"></div>
+
+        <div class="form-left-align">
+            <form asp-action="CreateRole" method="post">
+                <div class="form-group">
+                    <label asp-for="Name">Role name</label>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-dark">Create</button>
+                <a asp-action="RolesList" class="btn btn-light">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

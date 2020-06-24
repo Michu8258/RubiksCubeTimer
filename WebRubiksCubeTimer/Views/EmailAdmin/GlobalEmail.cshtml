@@ -1,0 +1,98 @@
+﻿@model GlobalEmailViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="col-8 offset-2">
+            <h4>Send global email</h4>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <form asp-action="GlobalEmail" method="post">
+
+                <div id="ExcludeModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Choose domains to exclude</h5>
+                            </div>
+                            <div class="modal-body form-group">
+                                @if (Model.ExcludedDomains.Any())
+                                {
+                                    @foreach (var domain in Model.ExcludedDomains)
+                                    {
+                                        <div class="my-2">
+                                            <input asp-for="@Model.ExcludedDomains[domain.Key]" placeholder="@domain.Key" type="checkbox" />
+                                            <label asp-for="@Model.ExcludedDomains[domain.Key]">@domain.Key</label>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>No domains</p>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-dark" data-dismiss="modal">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ConfirmModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Please confirm</h5>
+                            </div>
+                            <div class="modal-body form-group">
+                                <label>
+                                    This action will send email to all users defined in the database (except those with excluded domains).
+                                    Are you sure you want to do that?
+                                </label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-dark text-white">Send</button>
+                                <button type="button" class="btn btn-secondary text-white" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Subject">Email subject</label>
+                    <input asp-for="Subject" class="form-control" oninput="CheckLengthsOfInpute()" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message">Message</label>
+                    <textarea asp-for="Message" class="form-control" style="height: 400px" oninput="CheckLengthsOfInpute()"></textarea>
+                </div>
+                <div>
+                    <label>Exclude domains</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-11">
+                            <input class="form-control" readonly id="Excluded" />
+                        </div>
+                        <div class="form-group col-md-1">
+                            <button type="button" class="form-control btn btn-secondary text-white" id="SelectButton">Select</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-dark text-white" id="SendButton" disabled>Send</button>
+                <a asp-action="UsersList" asp-controller="UserAdmin" class="btn btn-secondary text-white">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/GlobalEmail.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/GlobalEmail.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

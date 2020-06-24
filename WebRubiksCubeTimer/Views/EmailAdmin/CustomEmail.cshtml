@@ -1,0 +1,42 @@
+﻿@model CustomEmailViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="col-8 offset-2">
+            <h4>Send custom email to <strong>@Model.UserName</strong></h4>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <form asp-action="CustomEmail" method="post">
+                <input type="hidden" asp-for="UserName" />
+                <div class="form-group">
+                    <label asp-for="Email">Email address</label>
+                    <input asp-for="Email" readonly placeholder="gmailc.om" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Subject">Email subject</label>
+                    <input asp-for="Subject" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message">Message</label>
+                    <textarea asp-for="Message" class="form-control" style="height: 400px"></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark text-white">Send</button>
+                <a asp-action="UsersList" asp-controller="UserAdmin" class="btn btn-secondary text-white">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/GlobalEmail.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/GlobalEmail.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

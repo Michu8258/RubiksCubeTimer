@@ -1,0 +1,76 @@
+﻿@model CrudCubeModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <div class="col-6 offset-3">
+            <form asp-action="AddCube" method="post">
+                <h4>Define new cube</h4>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="row row-cols-2">
+                    <div class="col-6 form-group">
+                        <label asp-for="ManufacturerID">Manufacturer</label>
+                        <select asp-for="ManufacturerID" class="form-control">
+                            <option selected disabled value="-1">Please select</option>
+                            @foreach (var manu in Model.Manufacturers)
+                            {
+                                <option value="@manu.Identity">@manu.Name, @manu.Country</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-6 form-group">
+                        <label asp-for="ModelName">Model name</label>
+                        <input asp-for="ModelName" class="form-control" />
+                    </div>
+                </div>
+                <div class="row row-cols-2">
+                    <div class="col-6 form-group">
+                        <label asp-for="CategoryID">Category</label>
+                        <select asp-for="CategoryID" class="form-control">
+                            <option selected disabled value="-1">Please select</option>
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <option value="@cat.Identity">@cat.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-6 form-group">
+                        <label asp-for="PlasticColorID">Plastic color</label>
+                        <select asp-for="PlasticColorID" class="form-control">
+                            <option selected disabled value="-1">Please select</option>
+                            @foreach (var col in Model.PlasticColors)
+                            {
+                                <option value="@col.Identity">@col.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row row-cols-2">
+                    <div class="col-6 form-group">
+                        <label asp-for="ReleaseYear">Release year</label>
+                        <input asp-for="ReleaseYear" type="number" class="form-control" />
+                    </div>
+                    <div class="col-6 form-group">
+                        <label asp-for="WcaPermission">WCA permission</label>
+                        <div class="form-control">
+                            <input type="checkbox" asp-for="WcaPermission" />
+                            Yes
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-sm btn-dark text-white">Create</button>
+                <a asp-action="Summary" asp-controller="Cubes" class="btn btn-sm btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

@@ -1,0 +1,269 @@
+﻿@model CubesCollectionViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div id="AddCubeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign cube to your collection</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                @if (!Model.AvailableCategories.Any())
+                {
+                    <div>
+                        <label class="text-warning">You have all available cubes added to your collection.</label>
+                    </div>
+                }
+                <div class="form-group">
+                    <label>Choose category</label>
+                    <select class="form-control" id="CategoryId">
+                        <option selected disabled value="0">No category selected</option>
+                        @if (Model.AvailableCategories.Any())
+                        {
+                            @foreach (var category in Model.AvailableCategories)
+                            {
+                                <option value="@category.Identity">@category.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Choose anufacturer</label>
+                    <select class="form-control" id="ManufacturerId" disabled>
+                        <option selected disabled value="0">No manufacturer selected</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Choose coube</label>
+                    <select class="form-control" id="CubeId" disabled>
+                        <option selected disabled value="0">No cube selected</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="AddCubeToCollection" type="button" class="btn btn-sm btn-dark" disabled>Add</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="RemoveCubeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="CubeIdRemove" />
+            <input type="hidden" id="UserIdRemove" />
+            <div class="modal-header">
+                <h5 class="modal-title">Remove cube from collection</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <span>Are you sure You want to delete selected cube?</span>
+                <span class="d-flex">If you confirm, you will be still able to add this cube to your collection again.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" id="RemoveCubeButton">Remove</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="AddCubeRatingModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="CubeIdRate" />
+            <input type="hidden" id="UserIdRate" />
+            <div class="modal-header">
+                <h5 class="modal-title">Add cube rating</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <label>Cube: <strong id="RatingModalDesc"></strong></label>
+                <span class="d-flex my-2">Your rating:</span>
+                <div class="d-flex justify-content-center">
+                    @for (int i = 1; i < 6; i++)
+                    {
+                        <button class="btn btn=sm btn-warning text-white mx-2" onclick="SendRatingRequest('@i')">@i</button>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModCubeRatingModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="RCubeIdRate" />
+            <input type="hidden" id="RUserIdRate" />
+            <div class="modal-header">
+                <h5 class="modal-title">Modify cube rating</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <label>Cube: <strong id="ReratingModalDesc"></strong></label>
+                <span class="d-flex">Your current rating:</span>
+                <div class="d-flex justify-content-center">
+                    <label class="badge badge-warning text-dark p-2" id="CurrentCubeRate"></label>
+                </div>
+                <span class="d-flex my-2">Your new rating:</span>
+                <div class="d-flex justify-content-center">
+                    @for (int i = 1; i < 6; i++)
+                    {
+                        <button class="btn btn=sm btn-warning text-dark mx-2" onclick="SendReRatingRequest('@i')">@i</button>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="CubeInfoModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cube information</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <span class="d-flex">Manufacturer country:</span>
+                <strong class="d-flex mb-1 mx-2" id="InfoManCountry"></strong>
+                <span class="d-flex">Manufacturer foundation year: </span>
+                <strong class="d-flex mb-1 mx-2" id="InfoManYear"></strong>
+                <span class="d-flex">Users that added this cube: </span>
+                <strong class="d-flex mb-1 mx-2" id="InfoUsersAmount"></strong>
+                <span class="d-flex">Permitted category options: </span>
+                <div class="mb-1 mx-2" id="InfoOptList">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm  btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="content-margin-sidebar">
+        <input type="hidden" id="CurrentUserId" value="@Model.UserId" />
+        @if (User?.IsInRole("Administrator") == true)
+        {
+            <h5>My cubes collection <strong>(@Model.UserName, @Model.UserId)</strong></h5>
+        }
+        else
+        {
+            <h5>My cubes collection</h5>
+        }
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <table class="table table-sm table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="align-middle">Category</th>
+                    <th class="align-middle">Manufacturer</th>
+                    <th class="align-middle">Model name</th>
+                    <th class="align-middle">PlasticColor</th>
+                    <th class="align-middle">Release year</th>
+                    <th class="align-middle">Rating</th>
+                    <th class="align-middle">My rate</th>
+                    <th class="align-middle">WCA permission</th>
+                    <th class="align-middle col-narrow" colspan="3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.UserCubes.Any())
+                {
+                    @foreach (var cube in Model.UserCubes)
+                    {
+                        <tr>
+                            <td class="align-middle">@cube.Category</td>
+                            <td class="align-middle">@cube.Manufacturer</td>
+                            <td class="align-middle">@cube.ModelName</td>
+                            <td class="align-middle">@cube.PlasticColor</td>
+                            <td class="align-middle">@cube.ReleaseYear</td>
+                            <td class="align-middle">@cube.TotalRating</td>
+                            <td class="align-middle">
+                                @if (@cube.UserRate < 1)
+                                {
+                                    <span>Not rated</span>
+                                }
+                                else
+                                {
+                                    @cube.UserRate
+                                }
+                            </td>
+                            <td class="align-middle">
+                                @if (cube.WcaPermission)
+                                {
+                                    <input type="checkbox" disabled checked />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" disabled />
+                                }
+                            </td>
+
+                            <td class="align-middle">
+                                <button type="button" class="btn btn-sm btn-danger text-white" onclick="OpenRemoveModal('@cube.Identity', '@Model.UserId')">Remove</button>
+                            </td>
+                            <td class="align-middle">
+                                @if (@cube.UserRate < 1)
+                                {
+                                    <button type="button" class="btn btn-sm btn-block btn-secondary text-white" onclick="OpenRatingModal('@Model.UserId', '@cube.Identity',
+                                        '@string.Format("{0} {1} {2}", cube.Manufacturer, cube.ModelName, cube.PlasticColor)')">
+                                        Rate
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-sm btn-block btn-info text-white" onclick="OpenReRatingModal('@Model.UserId', '@cube.Identity',
+                                        '@string.Format("{0} {1} {2}", cube.Manufacturer, cube.ModelName, cube.PlasticColor)', '@cube.UserRate')">
+                                        Rerate
+                                    </button>
+                                }
+                            </td>
+                            <td class="align-middle">
+                                <button type="button" class="btn btn-sm btn-secondary text-white"
+                                        onclick="ShowCubeInfo('@cube.Identity')">
+                                    Info
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10" class="text-center">No cubes added to collection</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-sm btn-dark text-white" data-toggle="modal" data-target="#AddCubeModal">Add another cube</button>
+
+        <div class="content-margin d-flex justify-content-center mb-3" id="PaginationButtons"></div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/Pagination.js" asp-append-version="true"></script>
+        <script src="~/JS/CubesCollection.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/Pagination.min.js" asp-append-version="true"></script>
+        <script src="~/JS/CubesCollection.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

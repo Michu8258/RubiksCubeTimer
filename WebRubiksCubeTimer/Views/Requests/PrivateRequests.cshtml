@@ -1,0 +1,47 @@
+﻿@model string
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+@await Component.InvokeAsync("AddResponseModal")
+
+<div class="page-content">
+    <input type="hidden" readonly id="UserIdPlaceholder" value="@Model" />
+    <div class="content-margin-sidebar">
+        <div class="col-10 offset-2">
+            <div class="row row-cols-2">
+                <div class="col-9">
+                    <h4>Your private requests</h4>
+                    <div id="Requests">
+                    </div>
+                </div>
+                <div class="col-3">
+                    @await Component.InvokeAsync("RequestsFilter")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+<div class="content-margin-sidebar d-flex justify-content-center mb-3" id="PaginationButtons">
+</div>
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/Library/moment.js/moment.min.js" asp-append-version="true"></script>
+        <script src="~/Library/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Pagination.js" asp-append-version="true"></script>
+        <script src="~/JS/RequestsLib.js" asp-append-version="true"></script>
+        <script src="~/JS/RequestPrivate.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/Library/moment.js/moment.min.js" asp-append-version="true"></script>
+        <script src="~/Library/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Pagination.min.js" asp-append-version="true"></script>
+        <script src="~/JS/RequestsLib.min.js" asp-append-version="true"></script>
+        <script src="~/JS/RequestPrivate.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

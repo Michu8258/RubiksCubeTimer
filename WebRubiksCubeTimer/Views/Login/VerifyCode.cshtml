@@ -1,0 +1,34 @@
+﻿@model PasswordResetCodeModel
+
+<div class="form-centered">
+    <div>
+        <div class="form-left-align">
+            <h4>Update reseted password</h4>
+        </div>
+
+        <div asp-validation-summary="All" class="form-left-align text-danger"></div>
+
+        <div class="form-left-align">
+            <form asp-action="VerifyCode" method="post">
+                <div class="form-group">
+                    <label asp-for="EmailAddress">Your email address</label>
+                    <input asp-for="EmailAddress" type="email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Code">ResetCode</label>
+                    <input asp-for="Code" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewPassword">New password</label>
+                    <input asp-for="NewPassword" type="password" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NewPassword2">Confirm new password</label>
+                    <input asp-for="NewPassword2" type="password" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-dark text-white">Send</button>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-secondary text-white">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

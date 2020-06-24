@@ -1,0 +1,30 @@
+﻿<div id="ChangeStateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change state of selected request</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <div class="form-group">
+                    <span>Current state: <strong id="CurrentRequestState"></strong></span>
+                </div>
+                <div>
+                    <label>New state:</label>
+                </div>
+                <div class="row row-cols2">
+                    <div class="col-6">
+                        <label><input type="radio" id="NewStateOpened" name="state" value="0" /> Opened</label>
+                    </div>
+                    <div class="col-6">
+                        <label><input type="radio" id="NewStateClosed" name="state" value="1" /> Closed</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="ConfirmStateChange">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

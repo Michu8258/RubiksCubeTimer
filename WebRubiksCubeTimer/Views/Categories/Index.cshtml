@@ -1,0 +1,273 @@
+﻿@model CategoriesPageViewModel
+
+@await Component.InvokeAsync("Sidebar", new SidebarViewModel())
+
+<div id="AddOptionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new category option</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <label class="d-flex">Category option name</label>
+                <label class="text-danger" id="NewOptionIssues">New option name should be at least 5 characters long. Make sure that name does not contain any special characters.</label>
+                <input id="NewOptionInput" class="form-control" type="text" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="ConfirmOptionAdd">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DeleteOptionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Remove category option</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <span>Are you sure You want to delete category option: <strong id="OptionToDelete"></strong>?</span>
+                <span class="d-flex">This operation is irreversible.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="DeleteOptionButton" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="UpdateOptionModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="UpdateOptionId" />
+            <div class="modal-header">
+                <h5 class="modal-title">Modify category option</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <label class="d-flex">Category option name</label>
+                <label class="text-danger" id="ModifyOptionIssues">Option name should be at least 5 characters long. Make sure that name does not contain any special characters.</label>
+                <input id="UpdateOptionInput" class="form-control" type="text" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="ConfirmOptionModify">Modify</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="AddCategoryModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new category</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <label class="d-flex">Category name</label>
+                <label class="text-danger" id="NewCategoryIssues">New category name should be at least 5 characters long. Make sure that name does not contain any special characters.</label>
+                <input id="NewCategoryInput" class="form-control" type="text" />
+                <label class="d-flex mt-3">Shortest acceptable time</label>
+                <label class="text-danger" id="NewCategoryIssuesTime">Invalid time format</label>
+                <input id="NewDuration1" oninput="VerifyTime(1, this.value)" placeholder="00:00:00.000" class="form-control" type="text" />
+                <label class="d-flex my-4">Available category options</label>
+                <label class="text-danger" id="NewCategoryIssuesOpt">New category need to contain at least one category option.</label>
+                @foreach (var categoryOption in Model.CategoryOptions)
+                {
+                    <div class="form-group">
+                        <input name="@categoryOption.Name" id="OptionID_@categoryOption.Name" type="checkbox" />
+                        <label>@categoryOption.Name</label>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="ConfirmCategoryAdd">Add</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DeleteCategoryModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="CategoryIdDelete" />
+            <div class="modal-header">
+                <h5 class="modal-title">Remove category</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <span>Are you sure You want to delete category: <strong id="CategoryToDelete"></strong>?</span>
+                <span class="d-flex">This operation is irreversible.</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="DeleteCategoryButton" data-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModCategoryModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <input type="hidden" id="ModCategoryId" />
+            <div class="modal-header">
+                <h5 class="modal-title">Modify category <strong id="ModCategoryOriginalName"></strong></h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body form-group">
+                <label class="d-flex">Category name</label>
+                <label class="text-danger" id="ModCategoryIssues">Category name should be at least 5 characters long. Make sure that name does not contain any special characters.</label>
+                <input id="ModCategoryInput" class="form-control" type="text" />
+                <label class="d-flex mt-3">Shortest acceptable time</label>
+                <label class="text-danger" id="ModCategoryIssuesTime">Invalid time format</label>
+                <input id="NewDuration2" oninput="VerifyTime(2, this.value)" placeholder="00:00:00.000" class="form-control" type="text" />
+                <label class="d-flex my-4">Available category options</label>
+                <label class="text-danger" id="ModCategoryIssuesOpt">A category needs to contain at least one category option.</label>
+                @foreach (var categoryOption in Model.CategoryOptions)
+                {
+                    <div class="form-group">
+                        <input name="@categoryOption.Name" id="OptionMID_@categoryOption.Name.Replace(' ', '_')" type="checkbox" />
+                        <label>@categoryOption.Name</label>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" id="ConfirmCategoryMod">Modify</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-content">
+    <input type="hidden" id="OptionsModifEnabled" value="=@Model.OptionsModifyPermission" />
+    <div class="content-margin-sidebar">
+        <div class="row row-cols-2">
+            <div class="col-9">
+                <h5>Categories</h5>
+                <table class="table table-sm table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="align-middle">Name</th>
+                            <th class="align-middle">Acceptable time</th>
+                            <th class="align-middle">Options set</th>
+                            <th class="align-middle col-narrow" colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Categories.Any())
+                        {
+                            @foreach (var category in Model.Categories)
+                            {
+                                <tr>
+                                    <td class="align-middle">@category.Name</td>
+                                    <td class="align-middle">@category.ShortestAcceptableResult.ToString(@"hh\:mm\:ss\.fff")</td>
+                                    <td class="align-middle">@string.Join(", ", category.OptionsSet.OrderBy(o => o.Name).Select(o => o.Name))</td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-danger text-white" onclick="DeleteCategory('@category.Identity', '@category.Name')">Delete</button>
+                                    </td>
+                                    <td class="align-middle">
+                                        <button class="btn btn-sm btn-secondary text-white" onclick="ModifCategoryButt('@category.Identity', '@category.Name',
+                                            '@category.ShortestAcceptableResult.ToString(@"hh\:mm\:ss\.fff")')">Modify</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center">No categories defined</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button class="btn btn-sm btn-dark text-white" id="AddCategory">Add new</button>
+            </div>
+            <div class="col-3">
+                <h5>Category options</h5>
+                <table class="table table-sm table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="align-middle">Option name</th>
+                            @if (Model.OptionsModifyPermission)
+                            {
+                                <th colspan="2" class="align-middle col-narrow">Actions</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.CategoryOptions.Any())
+                        {
+                            @if (Model.OptionsModifyPermission)
+                            {
+                                foreach (var option in Model.CategoryOptions)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@option.Name</td>
+                                        <td class="align-middle">
+                                            <button class="btn btn-sm btn-danger text-white" onclick="DeleteCategoryOption('@option.Name')">Delete</button>
+                                        </td>
+                                        <td class="align-middle">
+                                            <button class="btn btn-sm btn-secondary text-white" onclick="UpdateCategoryOption('@option.Identity', '@option.Name')">Modify</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                foreach (var option in Model.CategoryOptions)
+                                {
+                                    <tr>
+                                        <td class="align-middle">@option.Name</td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            @if (Model.OptionsModifyPermission)
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center">No options defined</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="1" class="text-center">No options defined</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                @if (Model.OptionsModifyPermission)
+                {
+                    <button class="btn btn-sm btn-dark text-white" id="AddOption">Add new</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Component.InvokeAsync("Toast")
+
+@section scripts{
+    <environment names="Development">
+        <script src="~/JS/TimeSpanMask.js" asp-append-version="true"></script>
+        <script src="~/JS/CategoriesManager.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Production">
+        <script src="~/JS/TimeSpanMask.min.js" asp-append-version="true"></script>
+        <script src="~/JS/CategoriesManager.min.js" asp-append-version="true"></script>
+        <script src="~/JS/Sidebar.min.js" asp-append-version="true"></script>
+    </environment>
+}

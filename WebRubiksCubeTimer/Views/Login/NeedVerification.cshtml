@@ -1,0 +1,34 @@
+﻿@model VerifyEmailModel
+
+<div class="form-centered">
+    <div class="form-left-align">
+        <h4>Email verification</h4>
+    </div>
+
+    <div asp-validation-summary="All" class="form-left-align text-danger"></div>
+
+    <div class="form-left-align">
+        <form asp-action="NeedVerification" method="post">
+            <input type="hidden" asp-for="UserName" value="@Model.UserName" />
+            <div class="form-group">
+                @Model.UserName, your email addres was not verified yet.
+                We send you an email with verification key before. Please paste it
+                here to verify your email address. You need to do this only once.
+            </div>
+            <div class="form-group">
+                <label asp-for="Email">Email address</label>
+                <input asp-for="Email" type="email" class="form-control" readonly/>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="VerificationKey">Verification key</label>
+                <input asp-for="VerificationKey" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-dark" id="SubmitButton">Verify</button>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
