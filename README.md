@@ -5,6 +5,7 @@ This application was created for Rubik's cube enthusiasts. It helps you to keep 
 
 ## Main functionalities
 - storing times of solving series (no limitation of amount of solves in serie),
+- for every solve, scramble algorithm will be generated (if scramble was defined by admin/moderator),
 - selection of cubes, wchich you can use to perform solves,
 - generating charts that ilustrates your progress,
 - personalized dashboard when you can see you best solves for every cuba and category, also you can see which is your favourite cube abd category,
